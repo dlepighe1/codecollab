@@ -1,65 +1,48 @@
-import Image from "next/image";
+import { ArrowRight, Play } from 'lucide-react';
+import Link from 'next/link';
+import { FeaturesCarousel } from './components/ui/FeatureCarousel';
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="min-h-screen bg-[#020617] flex items-center justify-center">
+      <div className="flex-1 flex flex-col md:flex-row items-center justify-center w-full px-6 gap-12 lg:gap-24 py-12 max-w-7xl mx-auto">
+        
+        {/* Left Side */}
+        <div className="flex-1 space-y-8 text-center md:text-left z-20 max-w-2xl">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-blue-300 text-xs font-bold uppercase tracking-widest">
+            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+            Live Collaboration Platform
+          </div>
+
+          <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-[1.1]">
+            Code Together. <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
+              Build Faster.
+            </span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          
+          <p className="text-lg text-slate-400 max-w-xl leading-relaxed mx-auto md:mx-0">
+            The ultimate collaborative workspace. Pair program, run technical interviews, and learn with friends—all in real-time.
           </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+            <Link 
+              href="/dashboard"
+              className="px-8 py-4 bg-blue-600 text-white rounded-full font-bold text-lg hover:bg-blue-500 transition shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2"
+            >
+              Start Coding <ArrowRight className="w-5 h-5" />
+            </Link>
+            <button className="px-8 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-full font-bold text-lg transition flex items-center justify-center gap-2">
+              <Play className="w-4 h-4 fill-current" /> Watch Demo
+            </button>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Right Side */}
+        <div className="flex-1 w-full max-w-[480px] h-[520px] hidden md:flex items-center justify-center">
+          <FeaturesCarousel />
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
