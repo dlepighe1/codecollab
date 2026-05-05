@@ -1,70 +1,142 @@
-html {
-  scrollbar-gutter: stable;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Easing curves (Emil Kowalski) ─────────────────────────────────────── */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* ── Viewport reset ─────────────────────────────────────────────────────── */
+html, body, #root {
+  height: 100%;
+  min-height: 100%;
+}
+
+html, body {
+  overflow: hidden;
 }
 
 body {
+  margin: 0;
+  padding: 0;
   font-family: 'Inter', sans-serif;
   background-color: #0f172a;
   color: #f8fafc;
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .code-font {
   font-family: 'Fira Code', monospace;
 }
 
-/* Custom Scrollbar */
+/* ── Scrollbar ──────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
-
 ::-webkit-scrollbar-track {
-  background: transparent; 
+  background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1); 
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 10px;
+  transition: background 200ms ease-out;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2); 
+  background: rgba(255, 255, 255, 0.18);
 }
 
-/* Glassmorphism Utilities */
+/* ── Glassmorphism — purposeful, not decorative ─────────────────────────── */
+
+/* Navigation / persistent chrome — strong blur, very low bg */
+.glass-nav {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Panels / sidebar — medium opacity, anchors content */
 .glass-panel {
-  background: rgba(30, 41, 59, 0.4);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  background: rgba(22, 33, 55, 0.55);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 4px 24px rgba(0,0,0,0.15);
 }
 
+/* Cards — lightest glass, used for content containers */
 .glass-card {
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  /* Specific properties only — never transition: all */
+  transition: background 200ms var(--ease-out),
+              border-color 200ms var(--ease-out),
+              box-shadow 200ms var(--ease-out),
+              transform 200ms var(--ease-out);
 }
 
 .glass-card:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3);
+  background: rgba(255, 255, 255, 0.055);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.35),
+              0 0 0 0.5px rgba(255, 255, 255, 0.05) inset;
 }
 
-.text-glow {
-  text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+/* Interactive glass cards — cursor pointer + active state */
+.glass-card-interactive {
+  cursor: pointer;
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+.glass-card-interactive:active {
+  transform: scale(0.985);
+  transition-duration: 100ms;
 }
 
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* ── Modals ─────────────────────────────────────────────────────────────── */
+/* Modals scale from center at 0.95 — not from 0, never from nothing */
+.modal-backdrop {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(12px) saturate(1.1);
+  -webkit-backdrop-filter: blur(12px) saturate(1.1);
+}
+
+/* ── Button press feedback ──────────────────────────────────────────────── */
+/* Every pressable element should feel responsive */
+.btn-press:active {
+  transform: scale(0.97);
+  transition-duration: 100ms !important;
+}
+
+/* ── Text utilities ─────────────────────────────────────────────────────── */
+.text-glow-blue {
+  text-shadow: 0 0 24px rgba(59, 130, 246, 0.4);
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Utility ────────────────────────────────────────────────────────────── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Touch-safe hover — never trigger hover states on touch devices */
+@media (hover: none) {
+  .glass-card:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.07);
+    box-shadow: none;
+  }
 }

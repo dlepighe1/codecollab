@@ -1,166 +1,169 @@
-/**
- * Theme Style Definitions
- * 
- * Purpose: Centralized theme configurations
- * Optimization: 
- * - Frozen object prevents accidental mutations
- * - Can be tree-shaken if unused themes are removed
- * - No runtime overhead (compile-time constants)
- */
+import { WorkspaceTheme } from '../types';
+import { Extension } from '@codemirror/state';
+import { EditorView } from '@codemirror/view';
+import { oneDark } from '@codemirror/theme-one-dark';
 
-import type { ThemeColors, ThemeName } from '../types/theme.types';
-
-export const THEME_STYLES: Readonly<Record<ThemeName, ThemeColors>> = Object.freeze({
-  Default: {
-    appBg: 'bg-[#0f172a]',
-    panelBg: 'bg-slate-900/50 backdrop-blur-xl',
-    panelBorder: 'border-white/10',
-    cardBg: 'bg-slate-800/40',
-    cardBorder: 'border-white/5 hover:border-white/10',
-    modalBg: 'bg-[#0f172a]',
-    textPrimary: 'text-white',
-    textSecondary: 'text-slate-300',
-    textTertiary: 'text-slate-400',
-    accent: 'text-blue-400',
-    accentBg: 'bg-blue-600',
-    accentBorder: 'border-blue-500/30',
-    buttonPrimary: 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/20',
-    buttonSecondary: 'bg-white/10 hover:bg-white/20 text-white border border-white/5',
-    activeItem: 'bg-blue-600/10 text-blue-400 border-blue-500/50',
-    inactiveItem: 'text-slate-400 hover:bg-white/5 hover:text-slate-200',
-    inputBg: 'bg-black/20',
-    inputBorder: 'border-white/10 focus:border-blue-500/50',
-  },
-  
-  BlueSky: {
-    appBg: 'bg-slate-50',
-    panelBg: 'bg-white/80 backdrop-blur-xl shadow-xl',
-    panelBorder: 'border-white/60',
-    cardBg: 'bg-white/60',
-    cardBorder: 'border-blue-100 hover:border-blue-200',
-    modalBg: 'bg-white',
-    textPrimary: 'text-slate-900',
-    textSecondary: 'text-slate-700',
-    textTertiary: 'text-slate-500',
-    accent: 'text-blue-600',
-    accentBg: 'bg-blue-500',
-    accentBorder: 'border-blue-200',
-    buttonPrimary: 'bg-blue-500 hover:bg-blue-400 text-white shadow-lg shadow-blue-500/20',
-    buttonSecondary: 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200',
-    activeItem: 'bg-blue-50 text-blue-700 border-blue-200',
-    inactiveItem: 'text-slate-500 hover:bg-slate-100 hover:text-slate-700',
-    inputBg: 'bg-white',
-    inputBorder: 'border-slate-200 focus:border-blue-400',
-  },
-  
-  Galaxy: {
-    appBg: 'bg-[#050505]',
-    panelBg: 'bg-[#0a0a0a]/80 backdrop-blur-2xl',
-    panelBorder: 'border-purple-500/10',
-    cardBg: 'bg-[#111]',
-    cardBorder: 'border-white/5 hover:border-purple-500/20',
-    modalBg: 'bg-[#0a0a0a]',
-    textPrimary: 'text-white',
-    textSecondary: 'text-gray-300',
-    textTertiary: 'text-gray-500',
-    accent: 'text-purple-400',
-    accentBg: 'bg-purple-600',
-    accentBorder: 'border-purple-500/30',
-    buttonPrimary: 'bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-500/20',
-    buttonSecondary: 'bg-white/10 hover:bg-white/20 text-white border border-white/5',
-    activeItem: 'bg-purple-900/20 text-purple-300 border-purple-500/40',
-    inactiveItem: 'text-gray-500 hover:bg-white/5 hover:text-gray-300',
-    inputBg: 'bg-[#151515]',
-    inputBorder: 'border-white/10 focus:border-purple-500',
-  },
-  
-  Ocean: {
-    appBg: 'bg-[#0f172a]',
-    panelBg: 'bg-[#0f172a]/60 backdrop-blur-xl',
-    panelBorder: 'border-cyan-500/20',
-    cardBg: 'bg-[#162a42]/60',
-    cardBorder: 'border-cyan-500/10 hover:border-cyan-400/30',
-    modalBg: 'bg-[#0f172a]',
-    textPrimary: 'text-cyan-50',
-    textSecondary: 'text-cyan-100',
-    textTertiary: 'text-cyan-200/60',
-    accent: 'text-cyan-400',
-    accentBg: 'bg-cyan-600',
-    accentBorder: 'border-cyan-500/30',
-    buttonPrimary: 'bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-500/20',
-    buttonSecondary: 'bg-cyan-900/30 hover:bg-cyan-900/50 text-cyan-100 border border-cyan-500/20',
-    activeItem: 'bg-cyan-900/30 text-cyan-300 border-cyan-500/40',
-    inactiveItem: 'text-cyan-200/50 hover:bg-cyan-900/20 hover:text-cyan-100',
-    inputBg: 'bg-[#0c1826]',
-    inputBorder: 'border-cyan-500/30 focus:border-cyan-400',
-  },
-  
-  Nebula: {
-    appBg: 'bg-[#1e0b24]',
-    panelBg: 'bg-[#2e1065]/40 backdrop-blur-xl',
-    panelBorder: 'border-fuchsia-500/20',
-    cardBg: 'bg-[#2e1065]/40',
-    cardBorder: 'border-fuchsia-500/10 hover:border-fuchsia-400/30',
-    modalBg: 'bg-[#1e0b24]',
-    textPrimary: 'text-fuchsia-50',
-    textSecondary: 'text-fuchsia-100',
-    textTertiary: 'text-fuchsia-200/60',
-    accent: 'text-fuchsia-400',
-    accentBg: 'bg-fuchsia-600',
-    accentBorder: 'border-fuchsia-500/30',
-    buttonPrimary: 'bg-fuchsia-600 hover:bg-fuchsia-500 text-white shadow-lg shadow-fuchsia-500/20',
-    buttonSecondary: 'bg-fuchsia-900/30 hover:bg-fuchsia-900/50 text-fuchsia-100 border border-fuchsia-500/20',
-    activeItem: 'bg-fuchsia-900/30 text-fuchsia-300 border-fuchsia-500/40',
-    inactiveItem: 'text-fuchsia-200/50 hover:bg-fuchsia-900/20 hover:text-fuchsia-100',
-    inputBg: 'bg-[#1a0b2e]',
-    inputBorder: 'border-fuchsia-500/30 focus:border-fuchsia-400',
-  },
-  
-  Vector: {
-    appBg: 'bg-[#121212]',
-    panelBg: 'bg-[#181818]/90 backdrop-blur-xl',
-    panelBorder: 'border-white/10',
-    cardBg: 'bg-[#222]',
-    cardBorder: 'border-white/5 hover:border-white/20',
-    modalBg: 'bg-[#121212]',
-    textPrimary: 'text-white',
-    textSecondary: 'text-gray-300',
-    textTertiary: 'text-gray-500',
-    accent: 'text-white',
-    accentBg: 'bg-white',
-    accentBorder: 'border-white/20',
-    buttonPrimary: 'bg-white hover:bg-gray-200 text-black shadow-lg',
-    buttonSecondary: 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-white/10',
-    activeItem: 'bg-white text-black border-transparent',
-    inactiveItem: 'text-gray-500 hover:bg-white/10 hover:text-white',
-    inputBg: 'bg-[#111]',
-    inputBorder: 'border-white/10 focus:border-white',
-  },
-});
-
-// Export as const array for better tree-shaking
-export const AVAILABLE_THEMES = Object.keys(THEME_STYLES) as readonly ThemeName[];
-
-// Theme preview gradients for UI
-export const THEME_GRADIENTS: Readonly<Record<ThemeName, string>> = Object.freeze({
-  Default: 'from-slate-700 to-slate-900',
-  BlueSky: 'from-sky-400 via-cyan-200 to-white',
-  Galaxy: 'from-purple-900 to-black',
-  Ocean: 'from-cyan-900 to-slate-900',
-  Nebula: 'from-fuchsia-900 to-purple-900',
-  Vector: 'from-zinc-800 to-zinc-950',
-});
-
-/**
- * Storage Keys - Centralized to avoid typos
- */
-export const STORAGE_KEYS = {
-  THEME: 'app-theme',
-  THEME_VERSION: 'theme-version', // For cache busting if theme structure changes
-} as const;
-
-/**
- * Theme version - increment when theme structure changes
- * This helps invalidate old cached themes
- */
-export const THEME_VERSION = '1.0.0';
+export const WORKSPACE_THEME_CONFIG: Record<WorkspaceTheme, {
+    name: string;
+    monaco: any;
+    codemirror: Extension[];
+    ui: {
+        bg: string,
+        sidebar: string,
+        header: string,
+        border: string,
+        text: string,
+        accent: string,
+        secondaryAccent: string,
+        glass: string,
+        menuBg: string,
+        panelBg: string
+    }
+}> = {
+    'Default': {
+        name: 'Default Dark',
+        monaco: 'vs-dark',
+        codemirror: [oneDark],
+        ui: {
+            bg: 'linear-gradient(to bottom, #0f172a, #1e293b)',
+            sidebar: 'linear-gradient(to bottom, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95))',
+            header: 'rgba(15, 23, 42, 0.95)',
+            border: '#334155',
+            text: '#e2e8f0',
+            accent: '#3b82f6',
+            secondaryAccent: '#f59e0b',
+            glass: 'rgba(30, 41, 59, 0.95)',
+            menuBg: '#1e293b',
+            panelBg: '#1e293b'
+        }
+    },
+    'Ocean': {
+        name: 'Ocean Depth',
+        monaco: 'vs-dark',
+        codemirror: [oneDark],
+        ui: {
+            bg: 'linear-gradient(135deg, #020617 0%, #172554 50%, #1e3a8a 100%)',
+            sidebar: 'rgba(15, 23, 42, 0.9)',
+            header: 'rgba(15, 23, 42, 0.9)',
+            border: 'rgba(96, 165, 250, 0.3)',
+            text: '#eff6ff',
+            accent: '#3b82f6',
+            secondaryAccent: '#06b6d4',
+            glass: 'rgba(23, 37, 84, 0.8)',
+            menuBg: '#1e3a8a',
+            panelBg: '#0f172a'
+        }
+    },
+    'Obsidian Black': {
+        name: 'Obsidian Black',
+        monaco: {
+            base: 'vs-dark',
+            inherit: true,
+            rules: [],
+            colors: { 'editor.background': '#000000' }
+        },
+        codemirror: [
+            oneDark,
+            EditorView.theme({
+                '&': { backgroundColor: '#000000' },
+                '.cm-gutters': { backgroundColor: '#000000', borderRight: '1px solid #262626' },
+            }, { dark: true }),
+        ],
+        ui: {
+            bg: '#000000',
+            sidebar: '#000000',
+            header: '#000000',
+            border: '#262626',
+            text: '#a3a3a3',
+            accent: '#ffffff',
+            secondaryAccent: '#6366f1',
+            glass: '#171717',
+            menuBg: '#0a0a0a',
+            panelBg: '#000000'
+        }
+    },
+    'Snow White': {
+        name: 'Snow White',
+        monaco: 'light',
+        codemirror: [],
+        ui: {
+            bg: '#f3f4f6',
+            sidebar: '#ffffff',
+            header: '#ffffff',
+            border: '#e5e7eb',
+            text: '#000000',
+            accent: '#4b5563',
+            secondaryAccent: '#ef4444',
+            glass: '#ffffff',
+            menuBg: '#ffffff',
+            panelBg: '#ffffff'
+        }
+    },
+    'Cyberpunk': {
+        name: 'Cyberpunk',
+        monaco: {
+            base: 'vs-dark',
+            inherit: true,
+            rules: [
+                { token: 'comment', foreground: '6272a4' },
+                { token: 'keyword', foreground: 'ff79c6' },
+                { token: 'identifier', foreground: '8be9fd' },
+                { token: 'string', foreground: 'f1fa8c' },
+            ],
+            colors: {
+                'editor.background': '#0b0c15',
+                'editorCursor.foreground': '#ff79c6',
+                'editor.lineHighlightBackground': '#1f2130'
+            }
+        },
+        codemirror: [
+            oneDark,
+            EditorView.theme({
+                '&': { backgroundColor: '#0b0c15' },
+                '.cm-gutters': { backgroundColor: '#0b0c15', borderRight: '1px solid #2a2c3f' },
+                '.cm-cursor': { borderLeftColor: '#ff79c6' },
+                '.cm-activeLine': { backgroundColor: '#1f2130' },
+            }, { dark: true }),
+        ],
+        ui: {
+            bg: 'linear-gradient(to bottom right, #0b0c15, #131426)',
+            sidebar: '#0b0c15',
+            header: '#0b0c15',
+            border: '#2a2c3f',
+            text: '#e2e8f0',
+            accent: '#ff79c6',
+            secondaryAccent: '#06b6d4',
+            glass: '#131426',
+            menuBg: '#161829',
+            panelBg: '#0b0c15'
+        }
+    },
+    'Nebula': {
+        name: 'Cosmic Nebula',
+        monaco: {
+            base: 'vs-dark',
+            inherit: true,
+            rules: [],
+            colors: { 'editor.background': '#0f0c29' }
+        },
+        codemirror: [
+            oneDark,
+            EditorView.theme({
+                '&': { backgroundColor: '#0f0c29' },
+                '.cm-gutters': { backgroundColor: '#0f0c29', borderRight: '1px solid #4c1d95' },
+            }, { dark: true }),
+        ],
+        ui: {
+            bg: 'linear-gradient(to right, #0f0c29, #302b63, #24243e)',
+            sidebar: '#0f0c29',
+            header: '#0f0c29',
+            border: '#4c1d95',
+            text: '#e9d5ff',
+            accent: '#d8b4fe',
+            secondaryAccent: '#f472b6',
+            glass: '#2e1065',
+            menuBg: '#2e1065',
+            panelBg: '#0f0c29'
+        }
+    }
+};

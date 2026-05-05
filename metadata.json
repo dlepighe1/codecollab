@@ -1,0 +1,5 @@
+{
+  "name": "CodeCollab",
+  "description": "A real-time code collaboration platform with playground, collaborative spaces, and interview modes featuring a VS Code-inspired interface.",
+  "requestFramePermissions": []
+}
